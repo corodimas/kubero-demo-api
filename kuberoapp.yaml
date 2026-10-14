@@ -1,5 +1,5 @@
 # KuberoApp for the demo API — deployed into the sandbox pipeline's production
-# phase namespace. Replace <you> with your GitHub username, then:
+# phase namespace. Replace corodimas with your GitHub username, then:
 #   kubectl apply -f kuberoapp.yaml
 apiVersion: application.kubero.dev/v1alpha1
 kind: KuberoApp
@@ -18,8 +18,8 @@ spec:
   sleep: disabled
   gitrepo:
     admin: false
-    ssh_url: git@github.com:<you>/kubero-demo-api.git
-    clone_url: https://github.com/<you>/kubero-demo-api.git
+    ssh_url: git@github.com:corodimas/kubero-demo-api.git
+    clone_url: https://github.com/corodimas/kubero-demo-api.git
   image:
     # Build destination in the sandbox Artifact Registry (Kubero pushes here).
     repository: asia-southeast3-docker.pkg.dev/pkg-ssc-sandbox-dev/kubero/demo-api
