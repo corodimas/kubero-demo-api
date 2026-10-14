@@ -22,8 +22,8 @@ spec:
     clone_url: https://github.com/corodimas/kubero-demo-api.git
   image:
     # Build destination in the sandbox Artifact Registry (Kubero pushes here).
-    repository: asia-southeast3-docker.pkg.dev/pkg-ssc-sandbox-dev/kubero/demo-api
-    tag: latest
+    repository: asia-southeast3-docker.pkg.dev/pkg-ssc-sandbox-dev/kubero/sandbox-demo-api
+    tag: main-1
     pullPolicy: Always
     containerPort: 3000
     fetch:
@@ -33,13 +33,13 @@ spec:
         readOnlyRootFilesystem: false
     build:
       repository: node
-      tag: latest
+      tag: main-1
       command: "npm install"
       securityContext:
         readOnlyRootFilesystem: false
     run:
       repository: node
-      tag: latest
+      tag: main-1
       command: "node index.js"
       readOnlyAppStorage: true
       securityContext:

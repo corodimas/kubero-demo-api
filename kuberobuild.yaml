@@ -1,0 +1,24 @@
+# Triggers the buildpack build: clone -> npm install -> push image to AR.
+# The resulting tag (main-1) matches the app's image reference.
+apiVersion: application.kubero.dev/v1alpha1
+kind: KuberoBuild
+metadata:
+  name: demo-api-build-1
+  namespace: sandbox-production
+spec:
+  buildstrategy: buildpacks
+  app: demo-api
+  pipeline: sandbox
+  phase: production
+  id: "20261014-1300"
+  repository:
+    image: asia-southeast3-docker.pkg.dev/pkg-ssc-sandbox-dev/kubero/sandbox-demo-api
+    tag: main-1
+  git:
+    url: https://github.com/corodimas/kubero-demo-api.git
+    ref: main
+  podSecurityContext:
+    fsGroup: 1000
+  buildpack:
+    path: "."
+    cnbPlatformApi: "0.13"
