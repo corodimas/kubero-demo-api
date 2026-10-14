@@ -1,0 +1,93 @@
+# KuberoApp for the demo API — deployed into the sandbox pipeline's production
+# phase namespace. Replace <you> with your GitHub username, then:
+#   kubectl apply -f kuberoapp.yaml
+apiVersion: application.kubero.dev/v1alpha1
+kind: KuberoApp
+metadata:
+  name: demo-api
+  namespace: sandbox-production
+spec:
+  name: demo-api
+  pipeline: sandbox
+  phase: production
+  deploymentstrategy: git
+  buildstrategy: buildpacks
+  branch: main
+  ref: refs/heads/main
+  autodeploy: true
+  sleep: disabled
+  gitrepo:
+    admin: false
+    ssh_url: git@github.com:<you>/kubero-demo-api.git
+    clone_url: https://github.com/<you>/kubero-demo-api.git
+  image:
+    # Build destination in the sandbox Artifact Registry (Kubero pushes here).
+    repository: asia-southeast3-docker.pkg.dev/pkg-ssc-sandbox-dev/kubero/demo-api
+    tag: latest
+    pullPolicy: Always
+    containerPort: 3000
+    fetch:
+      repository: ghcr.io/kubero-dev/buildpacks/fetch
+      tag: v1.2
+      securityContext:
+        readOnlyRootFilesystem: false
+    build:
+      repository: node
+      tag: latest
+      command: "npm install"
+      securityContext:
+        readOnlyRootFilesystem: false
+    run:
+      repository: node
+      tag: latest
+      command: "node index.js"
+      readOnlyAppStorage: true
+      securityContext:
+        readOnlyRootFilesystem: true
+  envVars: []
+  podsize:
+    default: true
+    name: small
+    description: "Small (CPU: 0.25, Memory: 0.5Gi)"
+    resources:
+      limits:
+        cpu: 500m
+        memory: 1Gi
+      requests:
+        cpu: 250m
+        memory: 0.5Gi
+  replicaCount: 1
+  service:
+    port: 80
+    type: ClusterIP
+  ingress:
+    enabled: true
+    className: nginx
+    annotations: {}
+    tls: []
+    hosts:
+      - host: demo-api.34.15.170.152.nip.io
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 2
+    targetCPUUtilizationPercentage: 80
+  web:
+    replicaCount: 1
+    autoscaling:
+      enabled: false
+      minReplicas: 1
+      maxReplicas: 2
+      targetCPUUtilizationPercentage: 80
+  worker:
+    replicaCount: 0
+    autoscaling:
+      enabled: false
+      minReplicas: 0
+      maxReplicas: 1
+      targetCPUUtilizationPercentage: 80
+  cronjobs: []
+  addons: []

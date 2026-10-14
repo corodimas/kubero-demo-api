@@ -1,0 +1,12 @@
+{
+  "name": "kubero-demo-api",
+  "version": "1.0.0",
+  "description": "Tiny Express API for the Kubero PoC",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
